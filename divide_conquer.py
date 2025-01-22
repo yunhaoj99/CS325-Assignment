@@ -19,11 +19,7 @@ def divide_and_conquer_closest_pair(points: list[tuple[float, float]]) -> tuple[
     """
     # TO COMPLETE 
 
-<<<<<<< HEAD
-    return distance, pair
-=======
     return distance, pairs
->>>>>>> 3d07791ebdc2b55dac55a2b3511a18169a6e0733
 
 
 
