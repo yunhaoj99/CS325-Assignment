@@ -22,6 +22,7 @@ def brute_force_closest_pair(points: list[tuple[float, float]]) -> tuple[float, 
     closest_pairs = []
     #yunhaoj99 改动
     #haorong改動1
+    
     n = len(points)
     for i in range(n):
         for j in range(i+1,n):
