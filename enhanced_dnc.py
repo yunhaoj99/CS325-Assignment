@@ -22,7 +22,7 @@ def enhanced_divide_and_conquer_closest_pair(points: list[tuple[float, float]]) 
     if not points:
         return float('inf'), []
         
-    # Pre-sort points by x and y coordinates
+    # Pre-sort points by x and y coordinates, avoid sorting the points again
     px = sorted(points, key=lambda p: p[0])  # Sort by x-coordinate
     py = sorted(points, key=lambda p: p[1])  # Sort by y-coordinate
     
