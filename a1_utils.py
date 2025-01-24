@@ -1,7 +1,7 @@
 import sys
 import math
 import random
-from typing import List
+from typing import List, Tuple
 
 def distance(p1, p2):
     """Calculate the Euclidean distance between two points."""
