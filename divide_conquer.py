@@ -94,7 +94,8 @@ def brute_force(points: list[tuple[float, float]]) -> tuple[float, list[tuple[tu
                 closest_pairs.append((points[i], points[j]))
             elif dist == min_dist:
                 closest_pairs.append((points[i], points[j]))
-    
+            else:
+                continue
     return min_dist, closest_pairs
 
 
