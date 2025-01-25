@@ -1,7 +1,7 @@
 import sys
 from itertools import combinations
 import math, time
-from a1_utils import read_input_from_cli, distance, write_output_to_file, generate_random_input_file
+from a1_utils import read_input_from_cli, distance, write_output_to_file, generate_random_input_file, sort_pairs
 
 def divide_and_conquer_closest_pair(points: list[tuple[float, float]]) -> tuple[float, list[tuple[tuple[float, float], tuple[float, float]]]]:
     """
@@ -70,14 +70,15 @@ def divide_and_conquer_closest_pair(points: list[tuple[float, float]]) -> tuple[
     
     # Update final results
     if strip_min_dist < min_dist:
-        return strip_min_dist, strip_pairs
+        return strip_min_dist, sort_pairs(strip_pairs)
     elif strip_min_dist == min_dist:
         # Merge results and remove duplicates
         all_pairs = closest_pairs + strip_pairs
-        unique_pairs = list({tuple(sorted([tuple(p1), tuple(p2)])) for p1, p2 in all_pairs})
-        return min_dist, [(tuple(p1), tuple(p2)) for p1, p2 in unique_pairs]
+        # ensure all points are tuple type
+        unique_pairs = list({(tuple(p1), tuple(p2)) for p1, p2 in all_pairs})
+        return min_dist, sort_pairs(unique_pairs)
     else:
-        return min_dist, closest_pairs
+        return min_dist, sort_pairs(closest_pairs)
 
 
 def brute_force(points: list[tuple[float, float]]) -> tuple[float, list[tuple[tuple[float, float], tuple[float, float]]]]:

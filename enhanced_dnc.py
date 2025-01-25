@@ -1,7 +1,7 @@
 import sys
 from itertools import combinations
 import math
-from a1_utils import read_input_from_cli, distance, write_output_to_file
+from a1_utils import read_input_from_cli, distance, write_output_to_file, sort_pairs
 
 
 def enhanced_divide_and_conquer_closest_pair(points: list[tuple[float, float]]) -> tuple[float, list[tuple[tuple[float, float], tuple[float, float]]]]:
@@ -38,7 +38,7 @@ def enhanced_divide_and_conquer_closest_pair(points: list[tuple[float, float]]) 
             if abs(dist - min_dist) < 1e-6:  # Using epsilon for float comparison
                 all_pairs.append((px[i], px[j]))
 
-    return min_dist, all_pairs
+    return min_dist, sort_pairs(all_pairs)
 
 def closest_pair_rec(px: list[tuple[float, float]], py: list[tuple[float, float]]) -> tuple[float, list[tuple[tuple[float, float], tuple[float, float]]]]:
     """
@@ -90,7 +90,7 @@ def closest_pair_rec(px: list[tuple[float, float]], py: list[tuple[float, float]
         min_pairs = right_pairs
     else:
         min_dist = left_dist
-        min_pairs = left_pairs + right_pairs
+        min_pairs = sort_pairs(left_pairs + right_pairs)
         
     # Build strip of points within min_dist of median
     strip = [p for p in py if abs(p[0] - median_x) < min_dist]
@@ -108,7 +108,7 @@ def closest_pair_rec(px: list[tuple[float, float]], py: list[tuple[float, float]
                 min_pairs.append((strip[i], strip[j]))
             j += 1
             
-    return min_dist, min_pairs
+    return min_dist, sort_pairs(min_pairs)
 
 
 if __name__ == "__main__":

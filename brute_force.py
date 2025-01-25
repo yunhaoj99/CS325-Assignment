@@ -1,7 +1,7 @@
 import sys
 from itertools import combinations
 import math
-from a1_utils import read_input_from_cli, distance, write_output_to_file
+from a1_utils import read_input_from_cli, distance, write_output_to_file, sort_pairs
 
 def brute_force_closest_pair(points: list[tuple[float, float]]) -> tuple[float, list[tuple[tuple[float, float], tuple[float, float]]]]:
     """
@@ -32,8 +32,7 @@ def brute_force_closest_pair(points: list[tuple[float, float]]) -> tuple[float, 
             elif dist == min_dist:
                 closest_pairs.append((points[i], points[j]))
     
-
-    #TODO 
+    closest_pairs = sort_pairs(closest_pairs)
 
     return min_dist, closest_pairs
 
