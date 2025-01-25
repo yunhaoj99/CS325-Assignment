@@ -26,7 +26,7 @@ def enhanced_divide_and_conquer_closest_pair(points: list[tuple[float, float]]) 
     px = sorted(points, key=lambda p: p[0])  # Sort by x-coordinate
     py = sorted(points, key=lambda p: p[1])  # Sort by y-coordinate
     
-    # Find all pairs with minimum distance using only the recursive function
+    # Find all pairs with minimum distance using the recursive function
     min_dist, min_pairs = closest_pair_rec(px, py)
     
     return min_dist, sort_pairs(min_pairs)
