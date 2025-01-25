@@ -1,7 +1,7 @@
 import sys
 from itertools import combinations
-import math
-from a1_utils import read_input_from_cli, distance, write_output_to_file
+import math, time
+from a1_utils import read_input_from_cli, distance, write_output_to_file, generate_random_input_file
 
 def divide_and_conquer_closest_pair(points: list[tuple[float, float]]) -> tuple[float, list[tuple[tuple[float, float], tuple[float, float]]]]:
     """
@@ -99,8 +99,19 @@ def brute_force(points: list[tuple[float, float]]) -> tuple[float, list[tuple[tu
 
 if __name__ == "__main__":
     try:
+        #the first num can control how many different points in this list
+        #the second string can control write to which file
+        #the third can control the random seed(if seed is the same, the generate random num will be same)
+        generate_random_input_file(100, "sampleinput.txt", 42)
         points = read_input_from_cli()
+        #store the start_time
+        start_time = time.time()
         min_dist, closest_pairs = divide_and_conquer_closest_pair(points)
+        #store the end_time
+        end_time = time.time()
+        process_time = start_time - end_time
+        #print out the real time
+        print(f"Time: {process_time}")
 
         print(f"Minimum Distance: {min_dist}")
         print("Closest Pairs:")
