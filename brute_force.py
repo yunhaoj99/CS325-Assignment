@@ -39,7 +39,7 @@ def brute_force_closest_pair(points: list[tuple[float, float]]) -> tuple[float, 
 
 if __name__ == "__main__":
     try:
-        points = read_input_from_cli(
+        points = read_input_from_cli()
         min_dist, closest_pairs = brute_force_closest_pair(points)
 
         print(f"Minimum Distance: {min_dist}")
