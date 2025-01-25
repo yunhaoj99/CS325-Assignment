@@ -22,23 +22,14 @@ def enhanced_divide_and_conquer_closest_pair(points: list[tuple[float, float]]) 
     if not points:
         return float('inf'), []
         
-    # Pre-sort points by x and y coordinates, avoid sorting the points again
+    # Pre-sort points by x and y coordinates
     px = sorted(points, key=lambda p: p[0])  # Sort by x-coordinate
     py = sorted(points, key=lambda p: p[1])  # Sort by y-coordinate
     
-    # Find all pairs with minimum distance
+    # Find all pairs with minimum distance using only the recursive function
     min_dist, min_pairs = closest_pair_rec(px, py)
     
-    # Final check to ensure we have all pairs with minimum distance
-    all_pairs = []
-    n = len(points)
-    for i in range(n):
-        for j in range(i + 1, n):
-            dist = distance(px[i], px[j])
-            if abs(dist - min_dist) < 1e-6:  # Using epsilon for float comparison
-                all_pairs.append((px[i], px[j]))
-
-    return min_dist, sort_pairs(all_pairs)
+    return min_dist, sort_pairs(min_pairs)
 
 def closest_pair_rec(px: list[tuple[float, float]], py: list[tuple[float, float]]) -> tuple[float, list[tuple[tuple[float, float], tuple[float, float]]]]:
     """
