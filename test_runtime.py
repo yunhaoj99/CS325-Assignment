@@ -13,7 +13,7 @@ def test_algorithm(algo, points, algo_name):
     return end_time - start_time
 
 def plot_runtime_comparison(sizes, times_dict):
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 7))
     
     # Plot for each algorithm
     markers = ['o', 's', '^']  # Different markers for each algorithm
