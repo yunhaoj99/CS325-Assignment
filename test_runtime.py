@@ -40,7 +40,7 @@ def plot_runtime_comparison(sizes, times_dict):
 
 def main():
     # Define input sizes from 10 to 1000, incrementing by 50
-    input_sizes = list(range(1000, 5000, 200))
+    input_sizes = list(range(5000, 10000, 200))
     
     # Define algorithms to test
     algorithms = [

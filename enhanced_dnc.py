@@ -9,14 +9,11 @@ def enhanced_divide_and_conquer_closest_pair(points: list[tuple[float, float]]) 
     Recursively find the closest pair of points using a divide-and-conquer approach.
     
     Args:
-        points (list[tuple[float, float]]): A list of 2D points where 
-                                            each point is represented as a tuple (x, y).
+        points (list[tuple[float, float]]): A list of 2D points
                                             
     Returns:
         tuple[float, list[tuple[tuple[float, float], tuple[float, float]]]]:
-            - The minimum distance between the closest pair(s) of points.
-            - A list of tuples representing the closest point pairs, where each pair is a 
-              tuple of two points ((x1, y1), (x2, y2)).
+            - The minimum distance and list of closest pairs
     """
     # Handle empty input
     if not points:
@@ -26,7 +23,7 @@ def enhanced_divide_and_conquer_closest_pair(points: list[tuple[float, float]]) 
     px = sorted(points, key=lambda p: p[0])  # Sort by x-coordinate
     py = sorted(points, key=lambda p: p[1])  # Sort by y-coordinate
     
-    # Find all pairs with minimum distance using the recursive function
+    # Find all pairs with minimum distance using only the recursive function
     min_dist, min_pairs = closest_pair_rec(px, py)
     
     return min_dist, sort_pairs(min_pairs)
@@ -83,21 +80,31 @@ def closest_pair_rec(px: list[tuple[float, float]], py: list[tuple[float, float]
         min_dist = left_dist
         min_pairs = sort_pairs(left_pairs + right_pairs)
         
-    # Build strip of points within min_dist of median
-    strip = [p for p in py if abs(p[0] - median_x) < min_dist]
+    # Build strip of points within min_dist of median - use existing sorted py
+    strip = []
+    for p in py:
+        if abs(p[0] - median_x) < min_dist:
+            strip.append(p)
     
     # Check for closer pairs in strip
+    strip_pairs = []
     for i in range(len(strip)):
-        # Only need to check 7 points ahead (proved in literature)
+        # Only check up to 7 points ahead (proven optimal in literature)
         j = i + 1
-        while j < len(strip) and strip[j][1] - strip[i][1] < min_dist:
+        while j < min(i + 8, len(strip)):
             dist = distance(strip[i], strip[j])
             if dist < min_dist:
                 min_dist = dist
-                min_pairs = [(strip[i], strip[j])]
-            elif dist == min_dist:
-                min_pairs.append((strip[i], strip[j]))
+                strip_pairs = [(strip[i], strip[j])]
+            elif abs(dist - min_dist) < 1e-6:  # Using epsilon for float comparison
+                strip_pairs.append((strip[i], strip[j]))
             j += 1
+            
+    if strip_pairs:
+        if strip_pairs[0][0] != min_pairs[0][0]:  # If found smaller distance in strip
+            min_pairs = strip_pairs
+        else:  # Equal distances, merge results
+            min_pairs.extend(strip_pairs)
             
     return min_dist, sort_pairs(min_pairs)
 
