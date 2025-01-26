@@ -43,11 +43,15 @@ def enhanced_divide_and_conquer_closest_pair(points: list[tuple[float, float]]) 
       left_points_x = points_sorted_x[:mid]
       right_points_x = points_sorted_x[mid:]
 
-
-      # Divide y-sorted points based on x-sorted division
-      left_points_y = [point for point in points_sorted_y if point in left_points_x]
-      right_points_y = [point for point in points_sorted_y if point in right_points_x]
-          
+      # Use a set for efficient lookups
+      left_set = set(points_sorted_x[:mid])
+      left_points_y = []
+      right_points_y = []
+      for point in points_sorted_y:
+          if point in left_set:
+              left_points_y.append(point)
+          else:
+              right_points_y.append(point)
 
       # Recursively find the closest pairs in the left and right halves
       left_min_dist, left_closest_pairs = _closest_pair_recursive(left_points_x, left_points_y)
