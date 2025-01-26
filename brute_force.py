@@ -17,15 +17,19 @@ def brute_force_closest_pair(points: list[tuple[float, float]]) -> tuple[float, 
             - A list of tuples representing the closest point pairs, where each pair is a 
               tuple of two points ((x1, y1), (x2, y2)).
     """
-
+    #Set the minimun distance to infinity for comparing
     min_dist = float('inf')
+    #Use closest_pairs to store all the closest pairs
     closest_pairs = []
     n = len(points)
+    #For all the points, compute the distance of two of them, then compare the distance to min_dist
     for i in range(n):
         for j in range(i+1,n):
             dist = distance(points[i],points[j])
             if dist < min_dist:
+                #Update the min_dist
                 min_dist = dist
+                #Clear the previous closest_pairs list
                 closest_pairs.clear()
                 closest_pairs.append((points[i], points[j]))
             elif dist == min_dist:
