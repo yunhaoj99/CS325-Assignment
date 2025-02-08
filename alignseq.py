@@ -1,4 +1,9 @@
-import statistics
+import random
+import time
+from statistics import mean, stdev
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import linregress
 
 def read_cost_matrix(filename):
     """
@@ -142,13 +147,6 @@ def main():
 if __name__ == "__main__":
     main()
 
-import random
-import time
-from statistics import mean
-import matplotlib.pyplot as plt
-import numpy as np
-from scipy.stats import linregress
-
 def generate_random_sequence(length):
     """Generate random DNA sequence of given length
     
@@ -239,7 +237,7 @@ def run_time_analysis():
     print("Length\tAvg Time (s)\tStd Dev (s)")
     for length in lengths:
         avg = mean(results[length])
-        std = statistics.stdev(results[length]) if len(results[length]) > 1 else 0
+        std = stdev(results[length]) if len(results[length]) > 1 else 0
         print(f"{length}\t{avg:.4f}\t{std:.4f}")
 
     print(f"\nEmpirical complexity: O(n^{slope:.2f})")
