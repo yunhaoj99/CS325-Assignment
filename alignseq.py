@@ -1,12 +1,22 @@
 def read_cost_matrix(filename):
     """
-    Read cost matrix from file
-    Returns: alphabet (excluding first symbol) and cost matrix dictionary
+    Read cost matrix from file.
+
+    Args:
+        filename (str): Path to the cost matrix file. File should be in CSV format with
+                       first line containing the alphabet and subsequent lines containing
+                       the cost values for each character.
+
+    Returns:
+        tuple: Contains two elements:
+            - effective_alphabet (list): List of alphabet excluding the first symbol
+            - cost_matrix (dict): Cost matrix dictionary where keys are tuples of character
+                                pairs and values are their corresponding costs
     """
     with open(filename, 'r') as f:
         # Read first line to get alphabet (*,-,A,T,G,C)
         alphabet = f.readline().strip().split(',')
-        # Effective alphabet excludes the first item (usually wildcard)
+        # Effective alphabet excludes the first item
         effective_alphabet = alphabet[1:]
         
         # Create cost matrix dictionary
@@ -15,7 +25,7 @@ def read_cost_matrix(filename):
             values = line.strip().split(',')
             char = values[0]
             for j, cost in enumerate(values[1:]):
-                # Note: j corresponds to effective_alphabet[j]
+                # j corresponds to effective_alphabet[j]
                 cost_matrix[(char, effective_alphabet[j])] = int(cost)
                 
     return effective_alphabet, cost_matrix
@@ -23,8 +33,19 @@ def read_cost_matrix(filename):
 
 def sequence_alignment(seq1, seq2, cost_matrix):
     """
-    Implement sequence alignment using dynamic programming
-    Returns: minimum cost and aligned sequences (with gaps marked by '-')
+    Implement sequence alignment using dynamic programming.
+
+    Args:
+        seq1 (str): First input sequence to be aligned
+        seq2 (str): Second input sequence to be aligned
+        cost_matrix (dict): Cost matrix dictionary where keys are tuples of character 
+                          pairs (char1, char2) and values are their corresponding costs
+
+    Returns:
+        tuple: Contains two elements:
+            - min_cost (int): Minimum alignment cost
+            - (aligned1, aligned2) (tuple): Tuple containing the two aligned sequences 
+                                          with gaps marked by '-'
     """
     m, n = len(seq1), len(seq2)
     # dp[i][j] represents minimum alignment cost for seq1[0:i] and seq2[0:j]
@@ -124,8 +145,22 @@ import time
 from statistics import mean
 
 def generate_random_sequence(length):
-    """Generate random DNA sequence of given length"""
-    return ''.join(random.choice(['A', 'G', 'T', 'C']) for _ in range(length))
+    """Generate random DNA sequence of given length
+    
+    Args:
+        length (int): The desired length of the DNA sequence to generate
+        
+    Returns:
+        str: A randomly generated DNA sequence containing only A, G, T, C nucleotides
+    """
+    # Define the possible nucleotides in DNA sequence
+    nucleotides = ['A', 'G', 'T', 'C']
+    
+    # Generate random sequence using random.choices
+    random_sequence = random.choices(nucleotides, k=length)
+    
+    # Join the nucleotides into a single string
+    return ''.join(random_sequence)
 
 def run_time_analysis():
     # Read cost matrix first
