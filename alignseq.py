@@ -115,7 +115,7 @@ def sequence_alignment(seq1, seq2, cost_matrix):
             aligned1.append('-')
             aligned2.append(seq2[j-1])
             j -= 1
-    
+    # Reverse the aligned sequences to get the correct order
     aligned1 = ''.join(reversed(aligned1))
     aligned2 = ''.join(reversed(aligned2))
     
