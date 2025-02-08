@@ -1,3 +1,5 @@
+import statistics
+
 def read_cost_matrix(filename):
     """
     Read cost matrix from file.
@@ -143,6 +145,9 @@ if __name__ == "__main__":
 import random
 import time
 from statistics import mean
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy.stats import linregress
 
 def generate_random_sequence(length):
     """Generate random DNA sequence of given length
@@ -163,43 +168,82 @@ def generate_random_sequence(length):
     return ''.join(random_sequence)
 
 def run_time_analysis():
+    """
+    Conduct runtime analysis and create plots for sequence alignment algorithm
+    """
     # Read cost matrix first
     alphabet, cost_matrix = read_cost_matrix('imp2cost.txt')
     
-    # Sequence lengths to test
-    lengths = [500, 1000, 2000, 4000, 5000]
+    # Sequence lengths to test (more data points for better analysis)
+    lengths = [100, 200, 500, 1000, 1500, 2000, 2500, 3000]
     
     # Store results
-    results = {}
+    results = {length: [] for length in lengths}
+    avg_times = []
     
+    # Run experiments
     for length in lengths:
-        times = []
         print(f"\nTesting sequences of length {length}")
         
-        # Generate and test 10 pairs for each length
-        for i in range(10):
+        # Run 5 trials for each length
+        for i in range(5):
             seq1 = generate_random_sequence(length)
             seq2 = generate_random_sequence(length)
             
-            # Measure alignment time
             start_time = time.time()
             sequence_alignment(seq1, seq2, cost_matrix)
-            end_time = time.time()
+            execution_time = time.time() - start_time
             
-            execution_time = end_time - start_time
-            times.append(execution_time)
-            print(f"Pair {i+1}: {execution_time:.4f} seconds")
+            results[length].append(execution_time)
+            print(f"Trial {i+1}: {execution_time:.4f} seconds")
         
-        # Calculate average time
-        avg_time = mean(times)
-        results[length] = avg_time
+        avg_time = mean(results[length])
+        avg_times.append(avg_time)
         print(f"Average time for length {length}: {avg_time:.4f} seconds")
+
+    # Create plots
+    plt.figure(figsize=(12, 8))
     
-    # Print final summary
-    print("\nFinal Results:")
-    print("Length\tAverage Time (seconds)")
-    for length, avg_time in results.items():
-        print(f"{length}\t{avg_time:.4f}")
+    # Plot 1: Regular runtime plot
+    plt.subplot(2, 1, 1)
+    plt.plot(lengths, avg_times, 'bo-', label='Actual runtime')
+    plt.xlabel('Sequence Length (n)')
+    plt.ylabel('Time (seconds)')
+    plt.title('Sequence Alignment Runtime Analysis')
+    plt.grid(True)
+    plt.legend()
+
+    # Plot 2: Log-log plot to determine polynomial order
+    plt.subplot(2, 1, 2)
+    log_lengths = np.log(lengths)
+    log_times = np.log(avg_times)
+    
+    # Linear regression on log-log data
+    slope, intercept, r_value, p_value, std_err = linregress(log_lengths, log_times)
+    
+    plt.plot(log_lengths, log_times, 'ro-', label=f'Log-log plot (slope ≈ {slope:.2f})')
+    plt.plot(log_lengths, slope * log_lengths + intercept, 'g--', 
+             label=f'Fitted line (R² = {r_value**2:.3f})')
+    plt.xlabel('log(Sequence Length)')
+    plt.ylabel('log(Time)')
+    plt.title(f'Log-Log Plot (Empirical Order: O(n^{slope:.2f}))')
+    plt.grid(True)
+    plt.legend()
+
+    plt.tight_layout()
+    plt.savefig('runtime_analysis.png')
+    plt.close()
+
+    # Print numerical results
+    print("\nNumerical Results:")
+    print("Length\tAvg Time (s)\tStd Dev (s)")
+    for length in lengths:
+        avg = mean(results[length])
+        std = statistics.stdev(results[length]) if len(results[length]) > 1 else 0
+        print(f"{length}\t{avg:.4f}\t{std:.4f}")
+
+    print(f"\nEmpirical complexity: O(n^{slope:.2f})")
+    print(f"R-squared value: {r_value**2:.3f}")
 
 if __name__ == "__main__":
     run_time_analysis()
