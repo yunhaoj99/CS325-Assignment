@@ -210,7 +210,7 @@ def run_time_analysis():
     alphabet, cost_matrix = read_cost_matrix('imp2cost.txt')
     
     # Sequence lengths to test
-    lengths = [100, 250, 500, 1000, 1500, 2000, 2500, 3000]
+    lengths = [100, 250, 500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
     
     # Store results
     results = {}
