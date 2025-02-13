@@ -85,8 +85,8 @@ def check_cost(
        - Logs any mismatches.
 
     2) If a solution file (fni2) is provided:
-       - We do NOT compute or validate the solution file's alignment or cost.
-       - We only parse the cost at the end of each line and compare it to the *primary* file's reported cost.
+       - We do NOT compute or validate the solution file’s alignment or cost.
+       - We only parse the cost at the end of each line and compare it to the *primary* file’s reported cost.
        - If they differ, we mark it "Incorrect"; otherwise "Correct".
 
     A summary of mismatches is printed to the console, and full results
@@ -103,7 +103,7 @@ def check_cost(
     # If second solution file is provided, read its lines
     secondary_lines = []
     if fni2:
-        with open(fni2, 'r', encoding='utf-8') as fi2:
+        with open(fni2, 'r') as fi2:
             secondary_lines = fi2.readlines()
         if len(secondary_lines) != len(primary_lines):
             raise ValueError(
